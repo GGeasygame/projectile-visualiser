@@ -1,0 +1,12 @@
+h1 {
+    color: red;
+    text-align: center;
+}
+fieldset, form {
+    max-width: max-content;
+    margin: auto;
+    width: 50%;
+}
+input, label {
+    display: inline;
+}
