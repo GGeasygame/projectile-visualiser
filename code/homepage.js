@@ -7,7 +7,6 @@ function createProjectile(that) {
     const startVelocity = that.velocity.value;
     const angle = that.angle.value/100;
     const g = that.gravity.value;
-
     animateTrajectory(ctx, startVelocity, angle, g);
 }
 
@@ -26,7 +25,7 @@ function getCanvas() {
 function animateTrajectory(ctx, startVelocity, angle, g) {
     clearform();
     ctx.strokeStyle = 'red';
-    ctx.lineWidth = 1;    
+    ctx.lineJoin = "bevel";
 
     var canvasH =  canvas.height;
     var canvasW =  canvas.width;
@@ -46,24 +45,21 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
     var scale = zoom(ctx, maxHeight, range, canvasW, canvasH);
     canvasH /= scale;
     canvasW /= scale;
+
     
-    alert("scale: " + scale + " maxHeight: " + maxHeight + " range: " + range + " canvasW: " + canvasW + " canvasH: " + canvasH);
+    // alert("scale: " + scale + " maxHeight: " + maxHeight + " range: " + range + " canvasW: " + canvasW + " canvasH: " + canvasH);
 
     var points = [];
     // begin drawing and calculating the projectile trajectory
     // The angle isn't calcuted correctly yet
     for (var t = 0; t < travelTime; t += 0.1) {
+        t.toFixed(2);
         var x = startVelocity*Math.cos(angle)*t;
         var y = startVelocity*Math.sin(angle)*t;
         y = y - 0.5 * g * Math.pow(t, 2);
         y = -y + canvasH;
         points.push({x:x, y:y});
     }
-
-
-
-
-
     var i = 0;
 
     animate(ctx, points, i);
