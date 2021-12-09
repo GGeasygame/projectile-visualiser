@@ -30,5 +30,6 @@
     </div>
     <canvas id="canvas"></canvas>
     <button onclick="newProjectile();">create new directory</button>
+    <button onclick="clearCanvas();">Reset Projectiles</button>
 </body>
 </html>
