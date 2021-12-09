@@ -11,18 +11,24 @@
     <script type="text/javascript" src="./homepage.js"></script>
 </head>
 <body>
+    <div id="form">
     <h1>Projectile Visualiser</h1>
-    <fieldset>
-        <legend>Enter Projectile Data and Circumstances Data</legend>
-        <form action="" onsubmit="createTrajectory(this); return false;">
-            <label for="velocity">Starting Velocity</label>
-            <input type="text" name="velocity" class="velocity-input">
-            <br>
-            <label for="angle">Starting Angle</label>
-            <input type="text" name="angle" class="angle-input">
-            <input type="submit" value="submit">
-        </form>
-    </fieldset>
+        <fieldset >
+            <legend>Enter Projectile Data and Circumstances Data</legend>
+            <form action="" onsubmit="createProjectile(this); return false;">
+                <label for="velocity">Starting Velocity</label>
+                <input type="text" name="velocity" class="velocity-input">
+                <br>
+                <label for="angle">Starting Angle</label>
+                <input type="text" name="angle" class="angle-input">
+                <br>
+                <label for="gravity">Acting Gravitation</label>
+                <input type="text" name="gravity" class="gravity-input" value="9.8">
+                <input type="submit" value="Start Simulation">
+            </form>
+        </fieldset>
+    </div>
     <canvas id="canvas"></canvas>
+    <button onclick="newProjectile();">create new directory</button>
 </body>
 </html>
