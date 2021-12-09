@@ -51,6 +51,7 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
 
     var points = [];
     // begin drawing and calculating the projectile trajectory
+    // The angle isn't calcuted correctly yet
     for (var t = 0; t < travelTime; t += 0.1) {
         var x = startVelocity*Math.cos(angle)*t;
         var y = startVelocity*Math.sin(angle)*t;
@@ -64,8 +65,8 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
 
 
     var i = 0;
-    var fps = 10;
-    animate(ctx, points, i, fps);
+
+    animate(ctx, points, i);
 }
 
 function zoom(ctx, maxHeight, range, canvasW, canvasH) {
@@ -81,13 +82,12 @@ function zoom(ctx, maxHeight, range, canvasW, canvasH) {
 
 
 function animate(ctx, points, i, fps) {
-
+    // Using requestanimationframe to create a smooth animation
     if (i < points.length) {
-        setTimeout(function() {
-            requestAnimationFrame(function() {
-                animate(ctx, points, i);
-            });
-        }, 1000 / fps);
+        requestAnimationFrame(function() {
+            animate(ctx, points, i);
+        });
+
     }
     drawLine(ctx, points, i);
     i++;
