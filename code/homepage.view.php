@@ -31,7 +31,11 @@
                 <label for="impact">Impact at x meters</label><br>
                 <input type="text" name="impact" class="impact-input">
                 <br>
+                <label for="stoke">Activate stoke' drag</label><br>
+                <input type="checkbox" name="stoke" class="stoke-input" id="stoke">
+                <br>
                 <input type="submit" value="Start Simulation">
+
             </form>
         </fieldset>
     </div>

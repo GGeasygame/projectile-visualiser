@@ -24,8 +24,8 @@ function createProjectile(that) {
 
 
 
-    var velocityCompY = startVelocity * Math.sin(angle);
-    var velocityCompX = startVelocity * Math.cos(angle);
+    velocityCompY = startVelocity * Math.sin(angle);
+    velocityCompX = startVelocity * Math.cos(angle);
     var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
     const travelTime = 2 * velocityCompY / g ;
     var range = velocityCompX * travelTime;
@@ -91,15 +91,40 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
 
     var points = [];
     // begin drawing and calculating the projectile trajectory
-    // The angle isn't calculated correctly yet
-    for (var t = 0; t < travelTime; t += 0.1) {
-        t.toFixed(2);
-        var x = startVelocity * Math.cos(angle) * t;
-        var y = startVelocity * Math.sin(angle) * t;
-        y = y - 0.5 * g * Math.pow(t, 2);
-        y = -y + canvasH;
-        points.push({ x: x, y: y });
-    }
+
+    /*
+    var stoke = document.getElementById('stoke');
+    if (stoke.checked) {
+        for (var t = 0; t < travelTime; t += 0.1) {
+            t.toFixed(2);
+
+            var x = velocityCompX/1.81*Math.pow(10, -5);
+            var x2 = 1.81*Math.pow(10, -5)*t;
+            var x3 = Math.pow(2.71828, -(x2));
+            var x = x * (1-x2);
+            
+            var y = -(g/1.81*Math.pow(10, -5));
+            var y = y*t+1/1.81*Math.pow(10, -5);
+            var y2 = velocityCompY+g/1.81*Math.pow(10, -5);
+            var y3 = 1.81*Math.pow(10, -5)*t;
+            var y4 = 1-Math.pow(2.71828, -(y3));
+            var y = y*(y2)*(y4);
+
+            y = -y + canvasH;
+
+            points.push({ x: x, y: y });
+        }
+    } else {
+    */
+        for (var t = 0; t < travelTime; t += 0.1) {
+            t.toFixed(2);
+            var x = startVelocity * Math.cos(angle) * t;
+            var y = startVelocity * Math.sin(angle) * t;
+            y = y - 0.5 * g * Math.pow(t, 2);
+            y = -y + canvasH;
+            points.push({ x: x, y: y });
+        }
+    // }
     if (typeof oldlines == 'undefined') {
         var oldlines = [];
     } else {
