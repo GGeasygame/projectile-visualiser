@@ -1,4 +1,11 @@
 function createProjectile(that) {
+
+    if (typeof counter === 'undefined') {
+        counter = 0;
+    }
+    counter++;
+
+
     originalStateForm = document.getElementById('form').cloneNode(true);
     originalStateCanvas = document.getElementById('canvas').cloneNode(true);
 
@@ -9,13 +16,13 @@ function createProjectile(that) {
 
     var angle;
 
-    angle = parseFloat(that.angle.value*Math.PI/180);
+    angle = parseFloat(that.angle.value * Math.PI / 180);
 
     if (angle === 0 && that.impact.value != 0) {
         var impact = that.impact.value;
-        var temp = g*impact;
-        var temp = temp/Math.pow(startVelocity, 2);
-        angle = 0.5*Math.asin(temp);
+        var temp = g * impact;
+        var temp = temp / Math.pow(startVelocity, 2);
+        angle = 0.5 * Math.asin(temp);
     }
 
 
@@ -26,31 +33,39 @@ function createProjectile(that) {
     velocityCompY = startVelocity * Math.sin(angle);
     velocityCompX = startVelocity * Math.cos(angle);
     var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
-    const travelTime = 2 * velocityCompY / g ;
+    const travelTime = 2 * velocityCompY / g;
     var range = velocityCompX * travelTime;
+
+
+    document.getElementById('canvasLayers').innerHTML +=
+        '<canvas id="' + '">' + '</canvas>'
+
+
+        ;
 
     animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime);
 
     if (typeof dataArray == 'undefined')
-    dataArray = [];
-    dataArray.push({maxH:maxHeight,range:range,ttime:travelTime,angle:angle});
+        dataArray = [];
+    dataArray.push({ maxH: maxHeight, range: range, ttime: travelTime, angle: angle });
 
     htmlData = document.getElementById('datalists');
-        var i = dataArray.length-1;
-        var j = dataArray.length;
-        
-        htmlData.innerHTML +=
+    var i = dataArray.length - 1;
+    var j = dataArray.length;
 
-            'Trajectory ' + j + '<br>' + 
-            'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
-            'range: ' + Math.round(dataArray[i].range) + 'm<br>' + 
-            'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' + 
-            'angle: ' + Math.round(dataArray[i].angle*180/Math.PI) + '<br><br>'
+    htmlData.innerHTML +=
+
+        'Trajectory ' + j + '<br>' +
+        'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
+        'range: ' + Math.round(dataArray[i].range) + 'm<br>' +
+        'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' +
+        'angle: ' + Math.round(dataArray[i].angle * 180 / Math.PI) + '<br><br>'
 
         ;
 
 
     document.getElementById('dataField').style.display = "block";
+
 }
 
 
@@ -117,14 +132,14 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
         }
     } else {
     */
-        for (var t = 0; t < travelTime; t += 0.1) {
-            t.toFixed(2);
-            var x = startVelocity * Math.cos(angle) * t;
-            var y = startVelocity * Math.sin(angle) * t;
-            y = y - 0.5 * g * Math.pow(t, 2);
-            y = -y + canvasH;
-            points.push({ x: x, y: y });
-        }
+    for (var t = 0; t < travelTime; t += 0.1) {
+        t.toFixed(2);
+        var x = startVelocity * Math.cos(angle) * t;
+        var y = startVelocity * Math.sin(angle) * t;
+        y = y - 0.5 * g * Math.pow(t, 2);
+        y = -y + canvasH;
+        points.push({ x: x, y: y });
+    }
     // }
     if (typeof oldlines == 'undefined') {
         var oldlines = [];
@@ -143,11 +158,12 @@ function showMeters(ctx, canvasH, canvasW, scale) {
     ctx.moveTo(0, canvasH);
     for (var i = 100; i < canvasW; i += 100) {
         ctx.moveTo(i, canvasH);
-        ctx.lineTo(i, canvasH - 10 / scale);
+        ctx.lineTo(i, canvasH - 5 / scale);
+
     }
     for (var i = 100; i < canvasH; i += 100) {
-        ctx.moveTo(0 , i);
-        ctx.lineTo(10 / scale, i);
+        ctx.moveTo(0, i);
+        ctx.lineTo(5 / scale, i);
     }
     ctx.stroke();
     ctx.strokeStyle = 'red';

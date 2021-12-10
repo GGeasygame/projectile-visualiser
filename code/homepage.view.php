@@ -45,7 +45,9 @@
 
         </div>
     </fieldset>
+    <div id="canvasLayers">
     <canvas id="canvas"></canvas>
+    </div>
     <button onclick="newProjectile();">create new projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>
 </body>
