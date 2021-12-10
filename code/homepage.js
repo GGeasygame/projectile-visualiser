@@ -7,8 +7,33 @@ function createProjectile(that) {
     const startVelocity = that.velocity.value;
     const angle = that.angle.value / 100;
     const g = that.gravity.value;
+    hideCheckbox = document.getElementById('hide');
 
-    animateTrajectory(ctx, startVelocity, angle, g);
+
+
+    var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
+    var range = Math.pow(startVelocity, 2) * Math.sin(2 * angle) / g;
+
+    velocityCompY = startVelocity * Math.sin(angle);
+    const travelTime = 2 * velocityCompY / g;
+    animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime);
+
+    if (typeof dataArray == 'undefined')
+    dataArray = [];
+    dataArray.push({maxH:maxHeight,range:range,ttime:travelTime});
+
+    htmlData = document.getElementById('data');
+        var i = dataArray.length-1;
+        var j = dataArray.length;
+        htmlData.innerHTML +=
+            'Trajectory ' + j + '<br>' + 
+            'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
+            'range: ' + Math.round(dataArray[i].range) + 'm<br>' + 
+            'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br><br>'
+        ;
+
+
+    document.getElementById('dataField').style.display = "block";
 }
 
 
@@ -22,22 +47,20 @@ function getCanvas() {
     return ctx;
 }
 
-function animateTrajectory(ctx, startVelocity, angle, g) {
+function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime) {
     clearform();
     ctx.strokeStyle = 'red';
-    ctx.lineJoin = "bevel";
 
     var canvasH = canvas.height;
     var canvasW = canvas.width;
 
-    velocityCompY = startVelocity * Math.sin(angle);
+
 
     // calculate total time needed for the projectile to impact on ground
-    const travelTime = 2 * velocityCompY / g;
+
 
     // calculate maximum height and the range of the projectile
-    var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
-    var range = Math.pow(startVelocity, 2) * Math.sin(2 * angle) / g;
+
 
     // adjust zoom according to the height and range of the trajectory
     var scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
@@ -46,6 +69,8 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
     canvasH /= scale;
     canvasW /= scale;
     resetScale = 1 / scale;
+
+    showMeters(ctx, canvasH, canvasW, scale);
 
 
     var points = [];
@@ -69,6 +94,20 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
     animate(ctx, points, i);
 }
 
+function showMeters(ctx, canvasH, canvasW, scale) {
+    ctx.strokeStyle = 'black';
+    ctx.strokeWidth = 5 / scale;
+    ctx.beginPath();
+    ctx.moveTo(0, canvasH);
+    for (var i = 100; i < canvasW; i += 100) {
+        ctx.moveTo(i, canvasH);
+        ctx.lineTo(i, canvasH - 10 / scale);
+    }
+    ctx.stroke();
+    ctx.strokeStyle = 'red';
+    ctx.strokeWidth = 1;
+}
+
 function getScale(ctx, maxHeight, range, canvasW, canvasH) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     var scale = 1;
@@ -79,7 +118,7 @@ function getScale(ctx, maxHeight, range, canvasW, canvasH) {
     return scale;
 }
 
-function animate(ctx, points, i, fps) {
+function animate(ctx, points, i) {
     // Using requestanimationframe to create a smooth animation
     if (i < points.length) {
         requestAnimationFrame(function () {
@@ -96,6 +135,7 @@ function drawLine(ctx, points, i) {
     for (var j = 1; j < i; j++) {
         ctx.moveTo(points[j - 1].x, points[j - 1].y);
         ctx.lineTo(points[j].x, points[j].y);
+
     }
     ctx.stroke();
 }
@@ -106,7 +146,12 @@ function clearform() {
 function newProjectile() {
     document.getElementById('form').replaceWith(originalStateForm.cloneNode(true));
     ctx.scale(resetScale, resetScale);
+
+    // multiple projectiles added yet.
+    document.getElementById('canvas').replaceWith(originalStateCanvas.cloneNode(true));
+
 }
 function clearCanvas() {
     document.getElementById('canvas').replaceWith(originalStateCanvas.cloneNode(true));
+    newProjectile();
 }

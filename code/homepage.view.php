@@ -30,9 +30,18 @@
             </form>
         </fieldset>
     </div>
+    <fieldset id="dataField">
+            <legend>Data</legend>
+            <ul id="data">
+
+            </ul>
+        </fieldset>
     <canvas id="canvas"></canvas>
     <button onclick="newProjectile();">create new projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>
+    <label for="hide">
+        <input type="checkbox" id="hide" name="hide">Only show the projectile
+    </label>
 </body>
 
 </html>
