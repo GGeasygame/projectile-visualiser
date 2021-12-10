@@ -40,11 +40,11 @@
         </fieldset>
     </div>
     <fieldset id="dataField">
-            <legend>Data</legend>
-            <ul id="data">
+        <legend>Data</legend>
+        <div id="datalists">
 
-            </ul>
-        </fieldset>
+        </div>
+    </fieldset>
     <canvas id="canvas"></canvas>
     <button onclick="newProjectile();">create new projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>

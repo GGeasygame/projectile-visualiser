@@ -9,7 +9,6 @@ function createProjectile(that) {
 
     var angle;
 
-    console.log('angle');
     angle = parseFloat(that.angle.value*Math.PI/180);
 
     if (angle === 0 && that.impact.value != 0) {
@@ -36,16 +35,18 @@ function createProjectile(that) {
     dataArray = [];
     dataArray.push({maxH:maxHeight,range:range,ttime:travelTime,angle:angle});
 
-    htmlData = document.getElementById('data');
+    htmlData = document.getElementById('datalists');
         var i = dataArray.length-1;
         var j = dataArray.length;
         
         htmlData.innerHTML +=
+
             'Trajectory ' + j + '<br>' + 
             'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
             'range: ' + Math.round(dataArray[i].range) + 'm<br>' + 
             'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' + 
             'angle: ' + Math.round(dataArray[i].angle*180/Math.PI) + '<br><br>'
+
         ;
 
 
