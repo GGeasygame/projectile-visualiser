@@ -7,6 +7,7 @@ function createProjectile(that) {
     const startVelocity = that.velocity.value;
     const angle = that.angle.value/100;
     const g = that.gravity.value;
+
     animateTrajectory(ctx, startVelocity, angle, g);
 }
 
@@ -38,20 +39,19 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
     // calculate maximum height and the range of the projectile
     var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
     var range = Math.pow(startVelocity, 2)*Math.sin(2*angle)/g;
-    console.log("maxHeight: " + maxHeight + " range: " + range);
 
     // adjust zoom according to the height and range of the trajectory
+    var scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
+    ctx.scale(scale, scale);
     
-    var scale = zoom(ctx, maxHeight, range, canvasW, canvasH);
     canvasH /= scale;
     canvasW /= scale;
+    resetScale = 1 / scale;
 
-    
-    // alert("scale: " + scale + " maxHeight: " + maxHeight + " range: " + range + " canvasW: " + canvasW + " canvasH: " + canvasH);
 
     var points = [];
     // begin drawing and calculating the projectile trajectory
-    // The angle isn't calcuted correctly yet
+    // The angle isn't calculated correctly yet
     for (var t = 0; t < travelTime; t += 0.1) {
         t.toFixed(2);
         var x = startVelocity*Math.cos(angle)*t;
@@ -60,22 +60,25 @@ function animateTrajectory(ctx, startVelocity, angle, g) {
         y = -y + canvasH;
         points.push({x:x, y:y});
     }
+    if (typeof oldlines == 'undefined') {
+        var oldlines = [];
+    } else {
+        oldlines.push(points);
+    }
     var i = 0;
 
     animate(ctx, points, i);
 }
 
-function zoom(ctx, maxHeight, range, canvasW, canvasH) {
+function getScale(ctx, maxHeight, range, canvasW, canvasH) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     var scale = 1;
 
     while (maxHeight * scale > canvasH || range  * scale > canvasW) {
         scale -= 0.001;
     }
-    ctx.scale(scale, scale);
     return scale;
 }
-
 
 function animate(ctx, points, i, fps) {
     // Using requestanimationframe to create a smooth animation
@@ -87,7 +90,6 @@ function animate(ctx, points, i, fps) {
     }
     drawLine(ctx, points, i);
     i++;
-    console.log("i: " + i + " points: " + points.length);
 }
 function drawLine(ctx, points, i) {
     ctx.beginPath();
@@ -104,6 +106,7 @@ function clearform() {
 }
 function newProjectile() {
     document.getElementById('form').replaceWith(originalStateForm.cloneNode(true));
+    ctx.scale(resetScale, resetScale);
 }
 function clearCanvas() {
     document.getElementById('canvas').replaceWith(originalStateCanvas.cloneNode(true));

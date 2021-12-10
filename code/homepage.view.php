@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +11,11 @@
     <link rel="stylesheet" href="homepage.css">
     <script type="text/javascript" src="./homepage.js"></script>
 </head>
+
 <body>
     <div id="form">
-    <h1>Projectile Visualiser</h1>
-        <fieldset >
+        <h1>Projectile Visualiser</h1>
+        <fieldset>
             <legend>Enter Projectile Data and Circumstances Data</legend>
             <form action="" onsubmit="createProjectile(this); return false;">
                 <label for="velocity">Starting Velocity</label>
@@ -32,4 +34,5 @@
     <button onclick="newProjectile();">create new projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>
 </body>
+
 </html>
