@@ -4,32 +4,48 @@ function createProjectile(that) {
 
     ctx = getCanvas();
     // get data from form
-    const startVelocity = that.velocity.value;
-    const angle = that.angle.value / 100;
-    const g = that.gravity.value;
+    const startVelocity = parseFloat(that.velocity.value);
+    const g = parseFloat(that.gravity.value);
+
+    var angle;
+
+    console.log('angle');
+    angle = parseFloat(that.angle.value*Math.PI/180);
+
+    if (angle === 0 && that.impact.value != 0) {
+        var impact = that.impact.value;
+        var temp = g*impact;
+        var temp = temp/Math.pow(startVelocity, 2);
+        angle = 0.5*Math.asin(temp);
+    }
+
+
     hideCheckbox = document.getElementById('hide');
 
 
 
+    var velocityCompY = startVelocity * Math.sin(angle);
+    var velocityCompX = startVelocity * Math.cos(angle);
     var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
-    var range = Math.pow(startVelocity, 2) * Math.sin(2 * angle) / g;
+    const travelTime = 2 * velocityCompY / g ;
+    var range = velocityCompX * travelTime;
 
-    velocityCompY = startVelocity * Math.sin(angle);
-    const travelTime = 2 * velocityCompY / g;
     animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime);
 
     if (typeof dataArray == 'undefined')
     dataArray = [];
-    dataArray.push({maxH:maxHeight,range:range,ttime:travelTime});
+    dataArray.push({maxH:maxHeight,range:range,ttime:travelTime,angle:angle});
 
     htmlData = document.getElementById('data');
         var i = dataArray.length-1;
         var j = dataArray.length;
+        
         htmlData.innerHTML +=
             'Trajectory ' + j + '<br>' + 
             'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
             'range: ' + Math.round(dataArray[i].range) + 'm<br>' + 
-            'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br><br>'
+            'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' + 
+            'angle: ' + Math.round(dataArray[i].angle*180/Math.PI) + '<br><br>'
         ;
 
 
@@ -102,6 +118,10 @@ function showMeters(ctx, canvasH, canvasW, scale) {
     for (var i = 100; i < canvasW; i += 100) {
         ctx.moveTo(i, canvasH);
         ctx.lineTo(i, canvasH - 10 / scale);
+    }
+    for (var i = 100; i < canvasH; i += 100) {
+        ctx.moveTo(0 , i);
+        ctx.lineTo(10 / scale, i);
     }
     ctx.stroke();
     ctx.strokeStyle = 'red';

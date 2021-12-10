@@ -18,14 +18,19 @@
         <fieldset>
             <legend>Enter Projectile Data and Circumstances Data</legend>
             <form action="" onsubmit="createProjectile(this); return false;">
-                <label for="velocity">Starting Velocity</label>
+                <label for="velocity">Starting Velocity</label><br>
                 <input type="text" name="velocity" class="velocity-input">
                 <br>
-                <label for="angle">Starting Angle</label>
+                <label for="angle">Starting Angle</label><br>
                 <input type="text" name="angle" class="angle-input">
                 <br>
-                <label for="gravity">Acting Gravitation</label>
+                <label for="gravity">Acting Gravitation</label><br>
                 <input type="text" name="gravity" class="gravity-input" value="9.8">
+                <br>
+                <p>This setting will calculate at which angle the projectile will land on point x.</p>
+                <label for="impact">Impact at x meters</label><br>
+                <input type="text" name="impact" class="impact-input">
+                <br>
                 <input type="submit" value="Start Simulation">
             </form>
         </fieldset>
@@ -39,9 +44,6 @@
     <canvas id="canvas"></canvas>
     <button onclick="newProjectile();">create new projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>
-    <label for="hide">
-        <input type="checkbox" id="hide" name="hide">Only show the projectile
-    </label>
 </body>
 
 </html>
