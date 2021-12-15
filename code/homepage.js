@@ -14,7 +14,7 @@ function createProjectile(that) {
 
     canvasID = 'canvas' + counter + 1;
     canvasArray.push(createNewCanvas(canvasID));
-    
+
     originalStateCanvas = document.getElementById(canvasID).cloneNode(true);
 
     ctx = canvasArray[counter].getContext('2d');
@@ -99,7 +99,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
     ctx.scale(scale, scale);
-    
+
 
     if (typeof oldLines != 'undefined') {
         clearOldCanvas(canvasArray);
@@ -147,9 +147,15 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     if (typeof oldLines == 'undefined') {
         oldLines = [];
     }
-    
-    oldLines.push(points);
-    
+
+    var pointsCopy = points;
+    pointsCopy.forEach(element => function (scale) {
+        element.x / scale;
+        element.y * scale;
+    });
+
+    oldLines.push(pointsCopy);
+
     points.forEach(element => element.y += canvasH);
 
     var i = 0;
@@ -183,25 +189,26 @@ function showMeters(scale) {
 
     canvasMeters.id = "meter-canvas";
     canvasMeters.className = "projectile-layers";
-    
-    var body = document.getElementsByTagName("body")[0];
-    body.appendChild(canvas);
-    ctxMeters = canvasMeters.getContext('2d');
-    
 
-    
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(canvasMeters);
+    ctxMeters = canvasMeters.getContext('2d');
+
+    ctxMeters.setTransform(1, 0, 0, 1, 0, 0);
+    ctxMeters.scale(scale, scale);
+
     ctxMeters.strokeStyle = 'black';
-    ctxMeters.strokeWidth = 5 / scale;
+    ctxMeters.strokeWidth = 10;
     ctxMeters.beginPath();
     ctxMeters.moveTo(0, canvasMeters.height);
     for (var i = 100; i < canvasMeters.width; i += 100) {
         ctx.moveTo(i, canvasMeters.height);
-        ctx.lineTo(i, canvasMeters.height - 5 / scale);
-        }
+        ctx.lineTo(i, canvasMeters.height - 10);
+    }
     for (var i = 100; i < canvasMeters.height; i += 100) {
         ctx.moveTo(0, i);
-        ctx.lineTo(5 / scale, i);
-        }
+        ctx.lineTo(10, i);
+    }
     ctxMeters.stroke();
 }
 */
@@ -246,18 +253,25 @@ function redrawLines(ctx, scale, canvasH) {
 
         console.log('OLD BEFORE: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
 
+
+        console.log('scale: ' + scale + ' y: ' + oldLinesCopy[i][30].y);
+        console.log('');
         for (var j = 0; j < oldLinesCopy[i].length; j++) {
 
-            console.log('scale: ' + scale + ' y: ' + oldLinesCopy[i][j].y);
 
 
-            oldLinesCopy[i][j].y = oldLinesCopy[i][j].y* oldScale / scale;
-            oldLinesCopy[i][j].x = oldLinesCopy[i][j].x / oldScale * scale;
+            oldLinesCopy[i][j].y = oldLinesCopy[i][j].y / scale;
+            oldLinesCopy[i][j].x = oldLinesCopy[i][j].x * scale;
+
+
         }
+        console.log('scale: ' + scale + ' y: ' + oldLinesCopy[i][30].y);
+        console.log('');
         console.log('OLD AFTER: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
         drawLine(ctx, oldLinesCopy[i], oldLinesCopy[i].length);
     }
     ctx.strokeStyle = "red";
+    oldLines = oldLinesCopy;
 }
 
 function drawLine(ctx, points, i) {
