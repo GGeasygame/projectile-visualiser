@@ -4,25 +4,22 @@ function createProjectile(that) {
         counter = 0;
     }
 
-    if (typeof ctxArray === 'undefined') {
-        ctxArray = [];
-    } 
-    
+    if (typeof canvasArray === 'undefined') {
+        canvasArray = [];
+    }
+
 
     originalStateForm = document.getElementById('form').cloneNode(true);
 
-    try {
-        canvasID = 'canvas' + counter+1;
-        ctxArray.push(createNewCtx(canvasID));
-        originalStateCanvas = document.getElementById(canvasID).cloneNode(true);
-        ctxArray.forEach(element => console.log('counter: ' + counter + ' ctxArray: ' + element + ' ctxArray.length: ' + ctxArray.length));
+
+    canvasID = 'canvas' + counter + 1;
+    canvasArray.push(createNewCanvas(canvasID));
     
-        ctx = ctxArray[counter];
-    }
-    catch (err) {
-        alert(err.message);
-    }
-    
+    originalStateCanvas = document.getElementById(canvasID).cloneNode(true);
+
+    ctx = canvasArray[counter].getContext('2d');
+
+
 
     // get data from form
     const startVelocity = parseFloat(that.velocity.value);
@@ -52,7 +49,7 @@ function createProjectile(that) {
     var range = velocityCompX * travelTime;
 
 
-    animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime);
+    animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime);
 
     if (typeof dataArray == 'undefined')
         dataArray = [];
@@ -68,7 +65,7 @@ function createProjectile(that) {
         'range: ' + Math.round(dataArray[i].range) + 'm<br>' +
         'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' +
         'angle: ' + Math.round(dataArray[i].angle * 180 / Math.PI) + '<br><br>'
-    ;
+        ;
 
 
     document.getElementById('dataField').style.display = "block";
@@ -78,7 +75,7 @@ function createProjectile(that) {
 }
 
 
-function createNewCtx(canvasID) {
+function createNewCanvas(canvasID) {
     canvas = document.createElement('canvas');
 
     canvas.id = canvasID;
@@ -87,28 +84,24 @@ function createNewCtx(canvasID) {
     var body = document.getElementsByTagName("body")[0];
     body.appendChild(canvas);
 
-    return canvas.getContext('2d');
+    return canvas;
 }
 
-function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime) {
+function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime) {
     clearform();
     ctx.strokeStyle = 'red';
 
     var canvasH = canvas.height;
     var canvasW = canvas.width;
 
-
-
-    // calculate total time needed for the projectile to impact on ground
-
-
-    // calculate maximum height and the range of the projectile
-
-
     // adjust zoom according to the height and range of the trajectory
-    ctx.save();
     var scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
     ctx.scale(scale, scale);
+
+    if (typeof oldLines != 'undefined') {
+        clearOldCanvas(canvasArray);
+        redrawLines(ctx, oldLines, scale);
+    }
 
     canvasH /= scale;
     canvasW /= scale;
@@ -144,6 +137,25 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
         }
     } else {
     */
+
+    var points = getPoints(travelTime, startVelocity, angle, g, canvasH);
+
+    // }
+    if (typeof oldLines == 'undefined') {
+        oldLines = [];
+    }
+    oldLines.push(points);
+    
+
+    var i = 0;
+
+    animate(ctx, points, i);
+}
+
+
+
+function getPoints(travelTime, startVelocity, angle, g, canvasH) {
+    var points = [];
     for (var t = 0; t < travelTime; t += 0.1) {
         t.toFixed(2);
         var x = startVelocity * Math.cos(angle) * t;
@@ -152,36 +164,28 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
         y = -y + canvasH;
         points.push({ x: x, y: y });
     }
-    // }
-    if (typeof oldlines == 'undefined') {
-        var oldlines = [];
-    } else {
-        oldlines.push(points);
-    }
-    var i = 0;
-
-    animate(ctx, points, i);
+    return points;
 }
 
 // Need to fix so meters show on seperate canvas
- /*
+/*
 function showMeters(ctx, canvasH, canvasW, scale) {
-    ctx.strokeStyle = 'black';
-    ctx.strokeWidth = 5 / scale;
-    ctx.beginPath();
-    ctx.moveTo(0, canvasH);
-    for (var i = 100; i < canvasW; i += 100) {
-        ctx.moveTo(i, canvasH);
-        ctx.lineTo(i, canvasH - 5 / scale);
+   ctx.strokeStyle = 'black';
+   ctx.strokeWidth = 5 / scale;
+   ctx.beginPath();
+   ctx.moveTo(0, canvasH);
+   for (var i = 100; i < canvasW; i += 100) {
+       ctx.moveTo(i, canvasH);
+       ctx.lineTo(i, canvasH - 5 / scale);
 
-    }
-    for (var i = 100; i < canvasH; i += 100) {
-        ctx.moveTo(0, i);
-        ctx.lineTo(5 / scale, i);
-    }
-    ctx.stroke();
-    ctx.strokeStyle = 'red';
-    ctx.strokeWidth = 1;
+   }
+   for (var i = 100; i < canvasH; i += 100) {
+       ctx.moveTo(0, i);
+       ctx.lineTo(5 / scale, i);
+   }
+   ctx.stroke();
+   ctx.strokeStyle = 'red';
+   ctx.strokeWidth = 1;
 }
 */
 
@@ -206,6 +210,32 @@ function animate(ctx, points, i) {
     drawLine(ctx, points, i);
     i++;
 }
+
+function clearOldCanvas(canvasArray) {
+    for (var i = 0; i < canvasArray.length; i++) {
+        if (canvasArray[i].getContext('2d') != ctx) {
+            canvasArray[i].width += 0;
+        }
+    }
+}
+
+function redrawLines(ctx, oldLines, scale) {
+    var oldLinesCopy = oldLines;
+
+    for (var i = 0; i < oldLinesCopy.length; i++) {
+
+        console.log('BEFORE: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
+        for (var j = 0; j < oldLinesCopy[i].length; j++) {
+            oldLinesCopy[i][j].x *= Math.pow(scale, 2);
+
+            console.log('scale: ' + scale);
+            oldLinesCopy[i][j].y /= scale;
+        }
+        console.log('AFTER: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
+        drawLine(ctx, oldLinesCopy[i], oldLinesCopy[i].length);
+    }
+}
+
 function drawLine(ctx, points, i) {
     ctx.beginPath();
 
@@ -222,7 +252,6 @@ function clearform() {
 }
 function newProjectile() {
     document.getElementById('form').replaceWith(originalStateForm.cloneNode(true));
-    ctx.restore();
 }
 function clearCanvas() {
     document.getElementById(canvasID).replaceWith(originalStateCanvas.cloneNode(true));
