@@ -10,11 +10,6 @@ fieldset, form {
 input, label {
     display: inline;
 }
-canvas {
-    width: 100%;
-    height: 100%;
-    border: 1px solid red;
-}
 legend {
     text-align: center;
 }

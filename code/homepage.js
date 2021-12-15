@@ -1,7 +1,5 @@
 function createProjectile(that) {
 
-    alert('hi');
-
     if (typeof counter === 'undefined') {
         counter = 0;
     }
@@ -16,7 +14,17 @@ function createProjectile(that) {
 
     
 
-    ctx = getCanvas('canvas');
+    try {
+        canvasArray.push(createCanvas('canvas' + counter+1));
+    
+        canvasArray.forEach(element => console.log('canvasArray ' + element));
+    
+        ctx = canvasArray[counter];
+    }
+    catch (err) {
+        alert(err.message);
+    }
+    
 
     // get data from form
     const startVelocity = parseFloat(that.velocity.value);
@@ -72,14 +80,23 @@ function createProjectile(that) {
 }
 
 
-function getCanvas(canvasID) {
-    // get canvas
-    let canvas = document.querySelector('#' + canvasID);
-    if (!canvas.getContext) {
-        return;
-    }
-    let ctx = canvas.getContext('2d');
-    return ctx;
+function createCanvas(canvasID) {
+    var canvas = document.createElement('canvas');
+
+    canvas.id = canvasID;
+    canvas.style.border = "1px solid red";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+
+
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(canvas);
+
+    cursorLayer = document.getElementById("CursorLayer");
+
+    console.log(cursorLayer);
+
+    return canvas.getContext('2d');
 }
 
 function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime) {
