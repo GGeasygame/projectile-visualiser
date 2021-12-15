@@ -42,7 +42,6 @@
     <fieldset id="dataField">
         <legend>Data</legend>
         <div id="datalists">
-
         </div>
     </fieldset>
     <button onclick="newProjectile();">create new projectile</button>

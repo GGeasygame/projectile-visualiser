@@ -4,22 +4,20 @@ function createProjectile(that) {
         counter = 0;
     }
 
-    if (typeof canvasArray === 'undefined') {
-        var canvasArray = [];
-    }
+    if (typeof ctxArray === 'undefined') {
+        ctxArray = [];
+    } 
     
 
     originalStateForm = document.getElementById('form').cloneNode(true);
-    originalStateCanvas = document.getElementById('canvas').cloneNode(true);
-
-    
 
     try {
-        canvasArray.push(createCanvas('canvas' + counter+1));
+        canvasID = 'canvas' + counter+1;
+        ctxArray.push(createNewCtx(canvasID));
+        originalStateCanvas = document.getElementById(canvasID).cloneNode(true);
+        ctxArray.forEach(element => console.log('counter: ' + counter + ' ctxArray: ' + element + ' ctxArray.length: ' + ctxArray.length));
     
-        canvasArray.forEach(element => console.log('canvasArray ' + element));
-    
-        ctx = canvasArray[counter];
+        ctx = ctxArray[counter];
     }
     catch (err) {
         alert(err.message);
@@ -80,21 +78,14 @@ function createProjectile(that) {
 }
 
 
-function createCanvas(canvasID) {
-    var canvas = document.createElement('canvas');
+function createNewCtx(canvasID) {
+    canvas = document.createElement('canvas');
 
     canvas.id = canvasID;
-    canvas.style.border = "1px solid red";
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-
+    canvas.className = "projectile-layers";
 
     var body = document.getElementsByTagName("body")[0];
     body.appendChild(canvas);
-
-    cursorLayer = document.getElementById("CursorLayer");
-
-    console.log(cursorLayer);
 
     return canvas.getContext('2d');
 }
@@ -115,6 +106,7 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
 
 
     // adjust zoom according to the height and range of the trajectory
+    ctx.save();
     var scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
     ctx.scale(scale, scale);
 
@@ -122,7 +114,7 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
     canvasW /= scale;
     resetScale = 1 / scale;
 
-    showMeters(ctx, canvasH, canvasW, scale);
+    // showMeters(ctx, canvasH, canvasW, scale);
 
 
     var points = [];
@@ -171,6 +163,8 @@ function animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, trave
     animate(ctx, points, i);
 }
 
+// Need to fix so meters show on seperate canvas
+ /*
 function showMeters(ctx, canvasH, canvasW, scale) {
     ctx.strokeStyle = 'black';
     ctx.strokeWidth = 5 / scale;
@@ -189,6 +183,7 @@ function showMeters(ctx, canvasH, canvasW, scale) {
     ctx.strokeStyle = 'red';
     ctx.strokeWidth = 1;
 }
+*/
 
 function getScale(ctx, maxHeight, range, canvasW, canvasH) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -227,13 +222,9 @@ function clearform() {
 }
 function newProjectile() {
     document.getElementById('form').replaceWith(originalStateForm.cloneNode(true));
-    ctx.scale(resetScale, resetScale);
-
-    // multiple projectiles added yet.
-    document.getElementById('canvas').replaceWith(originalStateCanvas.cloneNode(true));
-
+    ctx.restore();
 }
 function clearCanvas() {
-    document.getElementById('canvas').replaceWith(originalStateCanvas.cloneNode(true));
+    document.getElementById(canvasID).replaceWith(originalStateCanvas.cloneNode(true));
     newProjectile();
 }
