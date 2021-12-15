@@ -95,6 +95,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     var canvasW = canvas.width;
 
     // adjust zoom according to the height and range of the trajectory
+    if (typeof scale != 'undefined') { oldScale = scale; }
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
     ctx.scale(scale, scale);
@@ -102,7 +103,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
 
     if (typeof oldLines != 'undefined') {
         clearOldCanvas(canvasArray);
-        redrawLines(ctx, scale);
+        redrawLines(ctx, scale, canvasH);
     }
 
     canvasH /= scale;
@@ -149,6 +150,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     
     oldLines.push(points);
     
+    points.forEach(element => element.y += canvasH);
 
     var i = 0;
 
@@ -164,7 +166,7 @@ function getPoints(travelTime, startVelocity, angle, g, canvasH) {
         var x = startVelocity * Math.cos(angle) * t;
         var y = startVelocity * Math.sin(angle) * t;
         y = y - 0.5 * g * Math.pow(t, 2);
-        y = -y + canvasH;
+        y = -y;
         points.push({ x: x, y: y });
     }
 
@@ -234,7 +236,7 @@ function clearOldCanvas(canvasArray) {
     }
 }
 
-function redrawLines(ctx, scale) {
+function redrawLines(ctx, scale, canvasH) {
     var oldLinesCopy = oldLines;
 
     console.log(oldLines);
@@ -247,8 +249,10 @@ function redrawLines(ctx, scale) {
         for (var j = 0; j < oldLinesCopy[i].length; j++) {
 
             console.log('scale: ' + scale + ' y: ' + oldLinesCopy[i][j].y);
-            oldLinesCopy[i][j].y /= scale;
-            oldLinesCopy[i][j].x /= scale;
+
+
+            oldLinesCopy[i][j].y = oldLinesCopy[i][j].y* oldScale / scale;
+            oldLinesCopy[i][j].x = oldLinesCopy[i][j].x / oldScale * scale;
         }
         console.log('OLD AFTER: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
         drawLine(ctx, oldLinesCopy[i], oldLinesCopy[i].length);
