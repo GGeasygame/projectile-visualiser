@@ -1,15 +1,23 @@
 function createProjectile(that) {
 
+    alert('hi');
+
     if (typeof counter === 'undefined') {
         counter = 0;
     }
-    counter++;
 
+    if (typeof canvasArray === 'undefined') {
+        var canvasArray = [];
+    }
+    
 
     originalStateForm = document.getElementById('form').cloneNode(true);
     originalStateCanvas = document.getElementById('canvas').cloneNode(true);
 
-    ctx = getCanvas();
+    
+
+    ctx = getCanvas('canvas');
+
     // get data from form
     const startVelocity = parseFloat(that.velocity.value);
     const g = parseFloat(that.gravity.value);
@@ -18,6 +26,7 @@ function createProjectile(that) {
 
     angle = parseFloat(that.angle.value * Math.PI / 180);
 
+    // get angle if only distance is provided
     if (angle === 0 && that.impact.value != 0) {
         var impact = that.impact.value;
         var temp = g * impact;
@@ -58,12 +67,14 @@ function createProjectile(that) {
 
     document.getElementById('dataField').style.display = "block";
 
+    counter++;
+
 }
 
 
-function getCanvas() {
+function getCanvas(canvasID) {
     // get canvas
-    let canvas = document.querySelector('#canvas');
+    let canvas = document.querySelector('#' + canvasID);
     if (!canvas.getContext) {
         return;
     }
