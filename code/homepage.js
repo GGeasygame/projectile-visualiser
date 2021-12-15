@@ -37,12 +37,6 @@ function createProjectile(that) {
     var range = velocityCompX * travelTime;
 
 
-    document.getElementById('canvasLayers').innerHTML +=
-        '<canvas id="' + '">' + '</canvas>'
-
-
-        ;
-
     animateTrajectory(ctx, startVelocity, angle, g, maxHeight, range, travelTime);
 
     if (typeof dataArray == 'undefined')
@@ -54,14 +48,12 @@ function createProjectile(that) {
     var j = dataArray.length;
 
     htmlData.innerHTML +=
-
         'Trajectory ' + j + '<br>' +
         'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
         'range: ' + Math.round(dataArray[i].range) + 'm<br>' +
         'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' +
         'angle: ' + Math.round(dataArray[i].angle * 180 / Math.PI) + '<br><br>'
-
-        ;
+    ;
 
 
     document.getElementById('dataField').style.display = "block";
