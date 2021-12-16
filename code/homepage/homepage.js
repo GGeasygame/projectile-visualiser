@@ -45,19 +45,23 @@ function createProjectile(that) {
     // display data to user
     if (typeof dataArray == 'undefined')
         dataArray = [];
-    dataArray.push({ maxH: maxHeight, range: range, ttime: travelTime, angle: angle });
+    dataArray.push({ maximum_height: maxHeight, range: range, travel_time: travelTime, angle: angle });
 
     htmlData = document.getElementById('datalists');
     var i = dataArray.length - 1;
     var j = dataArray.length;
 
-    htmlData.innerHTML +=
-        'Trajectory ' + j + '<br>' +
-        'Maximum Height: ' + Math.round(dataArray[i].maxH) + 'm<br>' +
-        'range: ' + Math.round(dataArray[i].range) + 'm<br>' +
-        'Traveltime: ' + Math.round(dataArray[i].ttime) + 's<br>' +
-        'angle: ' + Math.round(dataArray[i].angle * 180 / Math.PI) + '<br><br>'
-        ;
+    var content = '';
+    for (var i = 0; i < dataArray.length; i++) {
+        for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
+            content += Object.keys(dataArray[i])[j] + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
+            content += '<br>';
+        }
+        content += '<br>';
+    }
+    
+    htmlData.innerHTML = "<p>" + content + "</p>";
+
 
 
     document.getElementById('dataField').style.display = "block";
@@ -136,11 +140,11 @@ function getPoints(travelTime, startVelocity, angle, g) {
 
 function getScale(ctx, maxHeight, range, canvasW, canvasH) {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    var scale = 1;
-
+    var scale = 2;
     while (maxHeight * scale > canvasH || range * scale > canvasW) {
         scale -= 0.001;
     }
+    ctx.lineWidth = 1 / scale;
     return scale;
 }
 
