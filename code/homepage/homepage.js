@@ -53,7 +53,9 @@ function createProjectile(that) {
 
     var content = '';
     for (var i = 0; i < dataArray.length; i++) {
+        dataArray[i].angle = dataArray[i].angle * 180 / Math.PI;
         for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
+
             content += Object.keys(dataArray[i])[j] + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
             content += '<br>';
         }
@@ -162,12 +164,7 @@ function animate(ctx, points, i) {
 
 function redrawLines(ctx, scale, canvasH) {
     console.log('oldLines');
-    /*
-    oldLines.forEach(element => element.forEach(element2 => {
-        element2.x /= oldScale;
-        element2.y /= oldScale;
-    }));
-    */
+    ctx.lineWidth = 1 / scale;
     var oldLinesCopy = oldLines;
 
     for (var i = 0; i < oldLinesCopy.length; i++) {
