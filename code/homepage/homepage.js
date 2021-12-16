@@ -37,15 +37,15 @@ function createProjectile(that) {
     velocityCompX = startVelocity * Math.cos(angle);
     var maxHeight = Math.pow(startVelocity, 2) * Math.pow(Math.sin(angle), 2) / (2 * g);
     const travelTime = 2 * velocityCompY / g;
-    var range = velocityCompX * travelTime;
+    var distance = velocityCompX * travelTime;
 
 
-    animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime);
+    animateTrajectory(startVelocity, angle, g, maxHeight, distance, travelTime);
 
     // display data to user
     if (typeof dataArray == 'undefined')
         dataArray = [];
-    dataArray.push({ maximum_height: maxHeight, range: range, travel_time: travelTime, angle: angle * 180 / Math.PI});
+    dataArray.push({ maximum_height: maxHeight, distance: distance, travel_time: travelTime, angle: angle * 180 / Math.PI});
 
     htmlData = document.getElementById('datalists');
 
@@ -211,14 +211,15 @@ function viewAllTrajectories() {
     console.clear();
     var highestPoint = 0;
     var furthestPoint = 0;
+
     for(var i = 0; i  < dataArray.length; i++) {
-        if (dataArray[i].maxH > highestPoint) {
-            highestPoint = dataArray[i].maxH;
+        if (dataArray[i].maximum_height > highestPoint) {
+            highestPoint = dataArray[i].maximum_height;
         }
-        if (dataArray[i].range > furthestPoint) {
-            furthestPoint = dataArray[i].range;
+        if (dataArray[i].distance > furthestPoint) {
+            furthestPoint = dataArray[i].distance;
         }
-        console.log('test'  + dataArray[i].range + ' ' + furthestPoint);
+        console.log('test'  + dataArray[i].distance + ' ' + furthestPoint);
     }
     console.log(highestPoint + ' ' + furthestPoint);
 
