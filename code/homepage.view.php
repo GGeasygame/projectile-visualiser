@@ -10,6 +10,7 @@
     <title>Projectile Visualiser</title>
     <link rel="stylesheet" href="homepage.css">
     <script type="text/javascript" src="./homepage.js"></script>
+    <link rel="shortcut icon" type="image/jpg" href="../pictures/favicon.jpg"/>
 </head>
 
 <body>
@@ -44,6 +45,7 @@
         <div id="datalists">
         </div>
     </fieldset>
+    <canvas class="projectile-canvas" id="canvas"></canvas>
     <button onclick="newProjectile();">create new projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>
 </body>
