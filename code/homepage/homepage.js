@@ -45,13 +45,9 @@ function createProjectile(that) {
     // display data to user
     if (typeof dataArray == 'undefined')
         dataArray = [];
-    dataArray.push({ maximum_height: maxHeight, range: range, travel_time: travelTime, angle: angle });
+    dataArray.push({ maximum_height: maxHeight, range: range, travel_time: travelTime, angle: angle * 180 / Math.PI});
 
     htmlData = document.getElementById('datalists');
-    var i = dataArray.length - 1;
-    var j = dataArray.length;
-
-    dataArray[counter].angle = dataArray[counter].angle * 180 / Math.PI;
 
     var content = '';
     for (var i = 0; i < dataArray.length; i++) {
