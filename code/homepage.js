@@ -1,5 +1,7 @@
 function createProjectile(that) {
 
+    console.clear();
+
     if (typeof counter === 'undefined') {
         counter = 0;
     }
@@ -97,66 +99,41 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     // adjust zoom according to the height and range of the trajectory
     if (typeof scale != 'undefined') { oldScale = scale; }
     ctx.setTransform(1, 0, 0, 1, 0, 0);
+    if (typeof scale != 'undefined') { var oldScale = scale; }
     scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
     ctx.scale(scale, scale);
 
 
-    if (typeof oldLines != 'undefined') {
-        clearOldCanvas(canvasArray);
-        redrawLines(ctx, scale, canvasH);
-    }
-
     canvasH /= scale;
     canvasW /= scale;
+    if (typeof oldLines != 'undefined') {
+        clearOldCanvas(canvasArray);
+        redrawLines(ctx, scale, canvasH, oldScale);
+    }
+
 
 
     // showMeters(scale);
 
 
     var points = [];
-    // begin drawing and calculating the projectile trajectory
 
-    /*
-    var stoke = document.getElementById('stoke');
-    if (stoke.checked) {
-        for (var t = 0; t < travelTime; t += 0.1) {
-            t.toFixed(2);
+    var points = getPoints(travelTime, startVelocity, angle, g);
 
-            var x = velocityCompX/1.81*Math.pow(10, -5);
-            var x2 = 1.81*Math.pow(10, -5)*t;
-            var x3 = Math.pow(2.71828, -(x2));
-            var x = x * (1-x2);
-            
-            var y = -(g/1.81*Math.pow(10, -5));
-            var y = y*t+1/1.81*Math.pow(10, -5);
-            var y2 = velocityCompY+g/1.81*Math.pow(10, -5);
-            var y3 = 1.81*Math.pow(10, -5)*t;
-            var y4 = 1-Math.pow(2.71828, -(y3));
-            var y = y*(y2)*(y4);
-
-            y = -y + canvasH;
-
-            points.push({ x: x, y: y });
-        }
-    } else {
-    */
-
-    var points = getPoints(travelTime, startVelocity, angle, g, canvasH);
-
-    // }
     if (typeof oldLines == 'undefined') {
         oldLines = [];
     }
 
-    var pointsCopy = points;
-    pointsCopy.forEach(element => function (scale) {
-        element.x / scale;
-        element.y * scale;
-    });
+    for (var i = 0; i < points.length; i++) {
+        points[i].y += canvasH;
+    }
 
+    var pointsCopy = points;
     oldLines.push(pointsCopy);
 
-    points.forEach(element => element.y += canvasH);
+
+    console.log('canvas.height: ' + canvas.height + ' canvasH: ' + canvasH);
+    points.forEach(element => console.log('New Points: X: ' + element.x + ' Y: ' + element.y));
 
     var i = 0;
 
@@ -165,7 +142,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
 
 
 
-function getPoints(travelTime, startVelocity, angle, g, canvasH) {
+function getPoints(travelTime, startVelocity, angle, g) {
     var points = [];
     for (var t = 0; t < travelTime; t += 0.1) {
         t.toFixed(2);
@@ -176,7 +153,6 @@ function getPoints(travelTime, startVelocity, angle, g, canvasH) {
         points.push({ x: x, y: y });
     }
 
-    console.log('NEW: 1st x: ' + points[0].x + ' 1st y: ' + points[0].y);
 
     return points;
 }
@@ -243,35 +219,25 @@ function clearOldCanvas(canvasArray) {
     }
 }
 
-function redrawLines(ctx, scale, canvasH) {
+function redrawLines(ctx, scale, canvasH, oldScale) {
+    console.log('new Scale: ' + scale + ' old Scale: ' + oldScale);
+    oldLines.forEach(element => element.forEach(element2 => {
+        element2.x /= oldScale;
+        element2.y /= oldScale;
+        console.log('OLDLINES: X: ' + element2.x + ' Y: ' + element2.y);
+    }));
     var oldLinesCopy = oldLines;
-
-    console.log(oldLines);
 
     ctx.strokeStyle = "black";
     for (var i = 0; i < oldLinesCopy.length; i++) {
 
-        console.log('OLD BEFORE: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
-
-
-        console.log('scale: ' + scale + ' y: ' + oldLinesCopy[i][30].y);
-        console.log('');
         for (var j = 0; j < oldLinesCopy[i].length; j++) {
-
-
-
-            oldLinesCopy[i][j].y = oldLinesCopy[i][j].y / scale;
+            oldLinesCopy[i][j].y = oldLinesCopy[i][j].y * scale;
             oldLinesCopy[i][j].x = oldLinesCopy[i][j].x * scale;
-
-
         }
-        console.log('scale: ' + scale + ' y: ' + oldLinesCopy[i][30].y);
-        console.log('');
-        console.log('OLD AFTER: 1st x: ' + oldLinesCopy[i][0].x + ' 1st y: ' + oldLinesCopy[i][0].y);
         drawLine(ctx, oldLinesCopy[i], oldLinesCopy[i].length);
     }
     ctx.strokeStyle = "red";
-    oldLines = oldLinesCopy;
 }
 
 function drawLine(ctx, points, i) {
