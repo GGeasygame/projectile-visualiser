@@ -104,8 +104,8 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     ctx.scale(scale, scale);
 
 
-    canvasH /= scale;
-    canvasW /= scale;
+    canvasH *= scale;
+    canvasW *= scale;
     if (typeof oldLines != 'undefined') {
         clearOldCanvas(canvasArray);
         redrawLines(ctx, scale, canvasH, oldScale);
