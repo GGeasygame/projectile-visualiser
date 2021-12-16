@@ -51,9 +51,10 @@ function createProjectile(that) {
     var i = dataArray.length - 1;
     var j = dataArray.length;
 
+    dataArray[counter].angle = dataArray[counter].angle * 180 / Math.PI;
+
     var content = '';
     for (var i = 0; i < dataArray.length; i++) {
-        dataArray[i].angle = dataArray[i].angle * 180 / Math.PI;
         for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
 
             content += Object.keys(dataArray[i])[j] + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
