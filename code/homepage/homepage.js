@@ -9,6 +9,7 @@ function createProjectile(that) {
 
     originalStateForm = document.getElementById('form').cloneNode(true);
     originalStateCanvas = document.getElementById('canvas').cloneNode(true);
+    originalStateBody = document.body.cloneNode(true);
 
     ctx = canvas.getContext('2d');
 
@@ -67,7 +68,7 @@ function createProjectile(that) {
 
 
 function getCanvas(canvasID) {
-    return getElementById(canvasID);
+    return document.getElementById(canvasID);
 }
 
 function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime) {
@@ -76,7 +77,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
 
     var canvasH = canvas.height;
     var canvasW = canvas.width;
-    
+
 
     // adjust zoom according to the height and range of the trajectory
     if (typeof scale != 'undefined') { oldScale = scale; }
@@ -101,7 +102,7 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
         oldLines = [];
     }
 
-    
+
     var pointsCopy = points;
     oldLines.push(pointsCopy);
 
@@ -164,7 +165,7 @@ function redrawLines(ctx, scale, canvasH) {
     }));
     */
     var oldLinesCopy = oldLines;
-    
+
     for (var i = 0; i < oldLinesCopy.length; i++) {
         var canvasHOldLines = canvasH - oldLinesCopy[i][0].y;
         console.log('canvasHOldLines: ' + canvasHOldLines);
@@ -172,7 +173,7 @@ function redrawLines(ctx, scale, canvasH) {
             oldLinesCopy[i][j].y += canvasHOldLines;
             console.log('X: ' + oldLinesCopy[i][j].x + ' Y: ' + oldLinesCopy[i][j].y);
         }
-        
+
         ctx.strokeStyle = "black";
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(scale, scale);
@@ -206,4 +207,49 @@ function clearCanvas() {
 }
 function clearOldCanvas(canvas) {
     canvas.width += 0;
+}
+
+function viewAllTrajectories() {
+    console.clear();
+    var highestPoint = 0;
+    var furthestPoint = 0;
+    for(var i = 0; i  < dataArray.length; i++) {
+        if (dataArray[i].maxH > highestPoint) {
+            highestPoint = dataArray[i].maxH;
+        }
+        if (dataArray[i].range > furthestPoint) {
+            furthestPoint = dataArray[i].range;
+        }
+        console.log('test'  + dataArray[i].range + ' ' + furthestPoint);
+    }
+    console.log(highestPoint + ' ' + furthestPoint);
+
+    document.body.innerHTML = "";
+
+    var body = document.getElementsByTagName("body")[0];
+
+
+    var button = document.createElement('button');
+    button.textContent = "Go Back";
+    button.setAttribute("onclick", "goBack();")
+    body.appendChild(button);
+
+
+    var canvas = document.createElement('canvas');
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    body.appendChild(canvas);
+
+    var ctx = canvas.getContext('2d');
+
+    var scale = getScale(ctx, highestPoint, furthestPoint, canvas.width);
+
+    var canvasH = canvas.height;
+    canvasH = canvasH / scale;
+    redrawLines(ctx, scale, canvasH);
+
+}
+
+function goBack() {
+    location.reload();
 }

@@ -9,11 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projectile Visualiser</title>
     <link rel="stylesheet" href="homepage.css">
-    <script type="text/javascript" src="./homepage.js"></script>
-    <link rel="shortcut icon" type="image/jpg" href="../pictures/favicon.jpg"/>
+    <script type="text/javascript" src="homepage.js"></script>
+    <link rel="shortcut icon" type="image/jpg" href="../../pictures/favicon.jpg" />
 </head>
 
 <body>
+
     <div id="form">
         <h1>Projectile Visualiser</h1>
         <fieldset>
@@ -45,9 +46,11 @@
         <div id="datalists">
         </div>
     </fieldset>
-    <canvas class="projectile-canvas" id="canvas"></canvas>
-    <button onclick="newProjectile();">create new projectile</button>
+    <button onclick="newProjectile();">Create New Projectile</button>
     <button onclick="clearCanvas();">Reset Projectiles</button>
+    <button onclick="viewAllTrajectories();">View All Trajectories</button>
+    <canvas class="projectile-canvas" id="canvas"></canvas>
+
 </body>
 
 </html>
