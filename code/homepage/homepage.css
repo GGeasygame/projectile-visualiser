@@ -1,6 +1,7 @@
 body {
     margin: 0px;
     padding: 0px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .grid {
     grid-template: 
@@ -8,13 +9,17 @@ body {
     "errorBox"
     "form"
     "data"
-    "projectile"
+    "lowerDiv"
     ;
     grid-template-columns: auto;
     grid-template-rows: auto;
 }
+.grid-element {
+    margin: 10px 10px;
+}
 header {
     grid-area: head;
+    background-color: aqua;
 }
 #errorBox {
     grid-area: errorBox;
@@ -35,8 +40,8 @@ header {
     grid-area: data;
     display: none;
 }
-#projectileDiv {
-    grid-area: projectile;
+#lowerDiv {
+    grid-area: lowerDiv;
 }
 
 h1 {
@@ -46,7 +51,26 @@ h1 {
 fieldset, form {
     max-width: max-content;
     margin: auto;
-    width: 50%;
+    width: 70%;
+    text-align: center;
+}
+fieldset {
+    background-color: aliceblue;
+}
+button {
+    border-radius: 5px;
+}
+#submitForm {
+    background-color: greenyellow;
+}
+#newProjectileButton {
+    background-color: coral;
+}
+#clearCanvasButton {
+    background-color: turquoise;
+}
+#viewAllTrajectoriesButton {
+    background-color: cadetblue;
 }
 input, label {
     display: inline;
@@ -54,7 +78,6 @@ input, label {
 legend {
     text-align: center;
 }
-
 .projectile-canvas {
     border: 1px solid red;
     width: 100%;
@@ -63,4 +86,9 @@ legend {
     min-height: max-content;
     display: block;
 }
-
+#tutorial {
+    display: none;
+}
+li {
+    margin-bottom: 5px;
+}
