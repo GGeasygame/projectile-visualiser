@@ -48,7 +48,7 @@ h1 {
     color: red;
     text-align: center;
 }
-fieldset, form {
+.form-fieldset, form {
     max-width: max-content;
     margin: auto;
     width: 70%;
@@ -91,4 +91,7 @@ legend {
 }
 li {
     margin-bottom: 5px;
+}
+.data-element {
+    margin: 5px 5px;
 }

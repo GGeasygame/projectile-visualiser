@@ -18,13 +18,13 @@
         </header>
         <div id="errorBox" class="grid-element"></div>
         <div id="form" class="grid-element">
-            <fieldset>
+            <fieldset class="form-fieldset">
                 <legend>Enter Projectile Data and Circumstances Data</legend>
                 <form action="" onsubmit="createProjectile(this); return false;">
                     <label for="velocity">Starting Velocity [m/s]</label><br>
                     <input type="text" name="velocity" class="velocity-input">
                     <br>
-                    <label for="angle">Starting Angle</label><br>
+                    <label for="angle">Starting Angle [°]</label><br>
                     <input type="text" name="angle" class="angle-input">
                     <br>
                     <label for="gravity">Acting gravity [m/s<sup>2</sup>]</label><br>
@@ -32,7 +32,7 @@
                     <br>
                     <p>You can define the distance the projectile travels. You cannot define both angle and distance.
                     </p>
-                    <label for="distance">Distance traveled</label><br>
+                    <label for="distance">Distance traveled [m]</label><br>
                     <input type="text" name="distance" class="distance-input">
                     <br>
                     <input type="submit" value="Start Simulation" id="submitForm">

@@ -54,12 +54,14 @@ function createProjectile(that) {
 
     var content = '';
     for (var i = 0; i < dataArray.length; i++) {
+        var count = i + 1;
+        content += '<div class="data-element">Trajectory ' + count + '<br>';
         for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
 
             content += Object.keys(dataArray[i])[j] + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
             content += '<br>';
         }
-        content += '<br>';
+        content += '</div>';
     }
 
     htmlData.innerHTML = "<p>" + content + "</p>";
@@ -67,6 +69,13 @@ function createProjectile(that) {
 
 
     document.getElementById('dataField').style.display = "block";
+    var dataLists = document.getElementById('datalists');
+    dataLists.style.display = "flex";
+    dataLists.style.justifyContent = "flex-start";
+    dataLists.style.flexWrap = "wrap";
+    dataLists.style.flexDirection = "row";
+    
+
 
     counter++;
 
