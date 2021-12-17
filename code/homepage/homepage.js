@@ -1,8 +1,6 @@
 function createProjectile(that) {
 
-    if (!userInputValidation(that)) {
-        return false;
-    }
+
 
 
     if (typeof counter === 'undefined') {
@@ -35,6 +33,10 @@ function createProjectile(that) {
         angle = 0.5 * Math.asin(temp);
     }
 
+    if (!userInputValidation(that, angle)) {
+        return false;
+    }
+
     // Calculate data from projectile for later use
     velocityCompY = startVelocity * Math.sin(angle);
     velocityCompX = startVelocity * Math.cos(angle);
@@ -48,7 +50,7 @@ function createProjectile(that) {
     // display data to user
     if (typeof dataArray == 'undefined')
         dataArray = [];
-    dataArray.push({ maximum_height: maxHeight, distance: distance, travel_time: travelTime, angle: angle * 180 / Math.PI });
+    dataArray.push({ maximum_height_m: maxHeight, distance_m: distance, travel_time_s: travelTime, angle_degree: angle * 180 / Math.PI });
 
     htmlData = document.getElementById('datalists');
 
@@ -75,7 +77,9 @@ function createProjectile(that) {
     dataLists.style.flexWrap = "wrap";
     dataLists.style.flexDirection = "row";
     
-
+    // Scroll to bottom of page so user doesn't have to do it
+    var scrollingElement = (document.scrollingElement || document.body);
+    scrollingElement.scrollTop = scrollingElement.scrollHeight;
 
     counter++;
 
@@ -102,6 +106,9 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     scale = getScale(ctx, maxHeight, range, canvasW, canvasH);
     ctx.scale(scale, scale);
     canvasH /= scale;
+    canvasW /= scale;
+
+    
 
     // redraw the old trajectories so they're scaled right
     if (typeof oldLines != 'undefined') {
@@ -127,10 +134,49 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
     }
 
     var i = 0;
-    // Scroll to bottom of page so user doesn't have to do it
-    var scrollingElement = (document.scrollingElement || document.body);
-    scrollingElement.scrollTop = scrollingElement.scrollHeight;
+
+
+    var metersgap = showMeters(ctx, scale, canvasW, canvasH, maxHeight, range);
+    var showMetersContent = 'Line Every: ' + metersgap + 'm'
+    document.getElementById('showMeters').innerHTML = showMetersContent;
     animate(ctx, points, i);
+}
+
+function showMeters(ctx, scale, canvasW, canvasH, maxHeight, range) {
+    ctx.strokeStyle = "black";
+    var meterLineLength = 10 / scale;
+    var gap = 100;
+    var heighest = maxHeight > range ? maxHeight : range;
+    var count = 0;
+    var limit = 5;
+    var add = 100;
+ 
+    while (gap * 5 < heighest) {
+        for (var i = gap; i < heighest; i += gap) {
+            count++
+            if (count == limit) {
+                gap += add;
+                count = 0;
+                break;
+            }
+        }
+        if (gap >= 1000) { add = 500; }
+    } 
+
+    for (var i = gap; i < canvasW; i += gap) {
+        ctx.beginPath();
+        ctx.moveTo(i, canvasH);
+        ctx.lineTo(i, canvasH - meterLineLength);
+        ctx.stroke();
+    }
+    for (var i = gap; i < canvasH; i += gap) {
+        ctx.beginPath();
+        ctx.moveTo(0, canvasH - i);
+        ctx.lineTo(meterLineLength, canvasH - i);
+        ctx.stroke();
+    }
+    ctx.strokeStyle = "red";
+    return gap;
 }
 
 function getPoints(travelTime, startVelocity, angle, g) {
@@ -234,11 +280,11 @@ function viewAllTrajectories() {
 
         // get the highest and furthest point of all trajectories
         for (var i = 0; i < dataArray.length; i++) {
-            if (dataArray[i].maximum_height > highestPoint) {
+            if (dataArray[i].maximum_height_m > highestPoint) {
                 highestPoint = dataArray[i].maximum_height;
             }
-            if (dataArray[i].distance > furthestPoint) {
-                furthestPoint = dataArray[i].distance;
+            if (dataArray[i].distance_m > furthestPoint) {
+                furthestPoint = dataArray[i].distance_m;
             }
         }
 
@@ -280,7 +326,7 @@ function reloadPage() {
     location.reload();
 }
 
-function userInputValidation(that) {
+function userInputValidation(that, calculatedAngle) {
 
     //get all information from form
     var velocity = that.velocity.value;
@@ -304,6 +350,10 @@ function userInputValidation(that) {
     if (velocity == '') { err.push('You Must Enter A Value For Velocity'); }
     if (gravity == '') { err.push('You Must Enter A Value For Gravitation'); }
     if (angle == '' && distance == '') { err.push('You Must Enter A Value For Either The Angle Or The Distance') }
+
+    if (velocity / gravity > 100) { err.push('You Must Enter A Lower Velocity Or A Higher Gravitational Force (The Velocity Devided By Gravitational Force Cannot Be Higher Than 100)'); }
+    if (angle > 90 || angle < 0) { err.push('You Must Enter A Angle In The Allowed Range (Allowed Range is between 0 and 90 degrees)'); }
+    if (isNaN(calculatedAngle)) { err.push('The Entered Distance is to high. Please Enter A Lower Distance or Higher Velocity'); }
 
     // display error messages
     var errorBoxContent = "";
