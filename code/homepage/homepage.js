@@ -1,8 +1,4 @@
 function createProjectile(that) {
-
-
-
-
     if (typeof counter === 'undefined') {
         counter = 0;
     }
@@ -151,6 +147,7 @@ function showMeters(ctx, scale, canvasW, canvasH, maxHeight, range) {
     var limit = 5;
     var add = 100;
  
+    // calculate gap between the lines (lines should have nice proportions to the trajectory)
     while (gap * 5 < heighest) {
         for (var i = gap; i < heighest; i += gap) {
             count++
@@ -163,12 +160,14 @@ function showMeters(ctx, scale, canvasW, canvasH, maxHeight, range) {
         if (gap >= 1000) { add = 500; }
     } 
 
+    // draw lines on the x-axis
     for (var i = gap; i < canvasW; i += gap) {
         ctx.beginPath();
         ctx.moveTo(i, canvasH);
         ctx.lineTo(i, canvasH - meterLineLength);
         ctx.stroke();
     }
+    // draw lines on the y-axis
     for (var i = gap; i < canvasH; i += gap) {
         ctx.beginPath();
         ctx.moveTo(0, canvasH - i);

@@ -50,7 +50,6 @@
             <button onclick="reloadPage();" id="clearCanvasButton">Reset Projectiles</button>
             <button onclick="viewAllTrajectories();" id="viewAllTrajectoriesButton">View All Trajectories</button>
             <button onclick="showTutorial();" id="showTutorialButton">I Need A Tutorial</button>
-            <p id="showMeters"></p>
             <div id="tutorial">
                 <h2>Tutorial</h2>
                 <p>This tutorial will explain to you what this website does and how to use it.</p>
@@ -85,11 +84,15 @@
                     <li>View All Trajectories - If you want to get a better view of all the trajectories you can press the "View All Trajectories"-Button.
                         If pressed all the trajectories of all the projectiles will be displayed to you. If you want to go back you can press the "Go Back"-Button in the top left corner.
                     </li>
+                    <li>Meter Count - To better understand the scale of the trajectory, there will be lines on the x- and y-axis in the field outlined in red marking a specified distance.
+                        Above the field to the left a text will appear saying "Line Every: XXXm"; this text tells you what the distance of the gaps between the lines is.
+                    </li>
                 </ul>
 
 
                 
             </div>
+            <p id="showMeters"></p>
             <canvas class="projectile-canvas" id="canvas"></canvas>
         </div>
     </div>
