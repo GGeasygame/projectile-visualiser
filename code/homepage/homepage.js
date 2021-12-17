@@ -315,7 +315,7 @@ function viewAllTrajectories() {
         if (err instanceof ReferenceError) {
             //display error message
             var errorBox = document.getElementById('errorBox');
-            errorBox.innerHTML = '<ul class="error-box-list"><li>Cannot Show Trajectories If There is None. Enter Trajectory</li></ul>';
+            errorBox.innerHTML = '<ul class="error-box-list"><li>Cannot Show Trajectories If There is None. Enter Projectile</li></ul>';
             document.getElementById('errorBox').style.display = "block";
         }
     }
@@ -353,6 +353,7 @@ function userInputValidation(that, calculatedAngle) {
     if (velocity / gravity > 100) { err.push('You Must Enter A Lower Velocity Or A Higher Gravitational Force (The Velocity Devided By Gravitational Force Cannot Be Higher Than 100)'); }
     if (angle > 90 || angle < 0) { err.push('You Must Enter A Angle In The Allowed Range (Allowed Range is between 0 and 90 degrees)'); }
     if (isNaN(calculatedAngle)) { err.push('The Entered Distance is to high. Please Enter A Lower Distance or Higher Velocity'); }
+    if(gravity <= 0) { err.push('The gravity must be a positive number'); }
 
     // display error messages
     var errorBoxContent = "";

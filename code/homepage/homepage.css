@@ -15,7 +15,7 @@ body {
     grid-template-rows: auto;
 }
 .grid-element {
-    margin: 10px 10px;
+    margin: 10px 0px;
 }
 header {
     grid-area: head;
@@ -94,4 +94,10 @@ li {
 }
 .data-element {
     margin: 5px 5px;
+}
+#buttons {
+    background-color: aquamarine;
+}
+#showMeters {
+    margin: 0px;
 }

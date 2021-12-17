@@ -46,51 +46,69 @@
             </div>
         </fieldset>
         <div id="lowerDiv" class="grid-element">
-            <button onclick="newProjectile();" id="newProjectileButton">Create New Projectile</button>
-            <button onclick="reloadPage();" id="clearCanvasButton">Reset Projectiles</button>
-            <button onclick="viewAllTrajectories();" id="viewAllTrajectoriesButton">View All Trajectories</button>
-            <button onclick="showTutorial();" id="showTutorialButton">I Need A Tutorial</button>
+            <div id="buttons">
+                <button onclick="newProjectile();" id="newProjectileButton">Create New Projectile</button>
+                <button onclick="reloadPage();" id="clearCanvasButton">Reset Projectiles</button>
+                <button onclick="viewAllTrajectories();" id="viewAllTrajectoriesButton">View All Trajectories</button>
+                <button onclick="showTutorial();" id="showTutorialButton">I Need A Tutorial</button>
+            </div>
             <div id="tutorial">
                 <h2>Tutorial</h2>
                 <p>This tutorial will explain to you what this website does and how to use it.</p>
-                <p>This website will calculate, based on your information, how a projectile in a 2 dimensional vacuum will behave. 
+                <p>This website will calculate, based on your information, how a projectile in a 2 dimensional vacuum
+                    will behave.
                     The information this program gathers will be displayed in the field with the red border below.
                 </p>
                 <h3>How To Use The Website</h3>
                 <p>You can enter the information of the projectile in the form at the top of the page.</p>
-                <ul>
-                    <li>Starting Velocity - The starting velocity is the speed your projectile will have when you shoot it. 
+                <h4>You will need to enter following data:</h4>
+                <ul class="form-tutorial">
+                    <li>Starting Velocity - The starting velocity is the speed your projectile will have when you shoot
+                        it.
                         The unit used for the starting velocity is meters per second
                     </li>
                     <li>Starting Angle - The starting angle is the angle at which your projectile is shot.
-                        The angle is measured in degree. Example Picture:<br><img src="../../pictures/angle.png" alt="picture of an angle">
+                        The angle is measured in degree. Example Picture:<br><img src="../../pictures/angle.png"
+                            alt="picture of an angle">
                     </li>
-                    <li>Acting Gravity - The acting gravity is the force which pulls the projectile down; 
-                        a higher gravity makes the projectile fall faster whereas a lower gravity does not pull the projectile down as much.
+                    <li>Acting Gravity - The acting gravity is the force which pulls the projectile down;
+                        a higher gravity makes the projectile fall faster whereas a lower gravity does not pull the
+                        projectile down as much.
                     </li>
-                    <li>Distance traveled - An alternive to entering the starting angle is setting a distance which your projectile will travel.
-                        If you enter a distance the program will, based on the provided information, 
+                    <li>Distance traveled - An alternive to entering the starting angle is setting a distance which your
+                        projectile will travel.
+                        If you enter a distance the program will, based on the provided information,
                         calculate the angle at which the projectile has to be shot to reach the defined distance.
                         <br>
-                        Example: You can enter a starting velocity of 100m/s and a distance of 400m. The program will then calculate the angle (in this case 12°).
+                        Example: You can enter a starting velocity of 100m/s and a distance of 400m. The program will
+                        then calculate the angle (in this case 12°).
                         <br>
                         <b>You cannot enter both angle and distance</b>
                     </li>
-                    <li>Start Simulation - To start the simulation click the "Start Simulation"-Button. This will show a visualisation of the projectile on the field below.</li>
-                    <li>Create New Projectile - To create multiple projectiles and compare their trajectory you can press the "Create New Projectile"-Button. 
+                    <li>Start Simulation - To start the simulation click the "Start Simulation"-Button. This will show a
+                        visualisation of the projectile on the field below.</li>
+                </ul>
+                <h4>Additional Information: </h4>
+                <ul class="rest-tutorial">
+                    <li>Create New Projectile - To create multiple projectiles and compare their trajectory you can
+                        press the "Create New Projectile"-Button.
                         This will allow you create multiple projectile.
                     </li>
-                    <li>Reset Projectiles - To reset all your projectiles and clear the field below you can press the "Reset Projectiles"-Button.</li>
-                    <li>View All Trajectories - If you want to get a better view of all the trajectories you can press the "View All Trajectories"-Button.
-                        If pressed all the trajectories of all the projectiles will be displayed to you. If you want to go back you can press the "Go Back"-Button in the top left corner.
+                    <li>Reset Projectiles - To reset all your projectiles and clear the field below you can press the
+                        "Reset Projectiles"-Button.</li>
+                    <li>View All Trajectories - If you want to get a better view of all the trajectories you can press
+                        the "View All Trajectories"-Button.
+                        If pressed all the trajectories of all the projectiles will be displayed to you. If you want to
+                        go back you can press the "Go Back"-Button in the top left corner.
                     </li>
-                    <li>Meter Count - To better understand the scale of the trajectory, there will be lines on the x- and y-axis in the field outlined in red marking a specified distance.
-                        Above the field to the left a text will appear saying "Line Every: XXXm"; this text tells you what the distance of the gaps between the lines is.
+                    <li>Meter Count - To better understand the scale of the trajectory, there will be lines on the x-
+                        and y-axis in the field outlined in red marking a specified distance.
+                        Above the field to the left a text will appear saying "Line Every: XXXm"; this text tells you
+                        what the distance of the gaps between the lines is.
                     </li>
+                    <li>Displayed Data - The data which the program has calculated on the basis of the entered data will
+                        be displayed above the field with the red border.</li>
                 </ul>
-
-
-                
             </div>
             <p id="showMeters"></p>
             <canvas class="projectile-canvas" id="canvas"></canvas>
