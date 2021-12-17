@@ -1,4 +1,10 @@
 function createProjectile(that) {
+
+    if (!userInputValidation(that)) { 
+        return false;
+    }
+
+
     if (typeof counter === 'undefined') {
         counter = 0;
     }
@@ -22,9 +28,9 @@ function createProjectile(that) {
     angle = parseFloat(that.angle.value * Math.PI / 180);
 
     // get angle if only distance is provided
-    if (angle === 0 && that.impact.value != 0) {
-        var impact = that.impact.value;
-        var temp = g * impact;
+    if (angle === 0 && that.distance.value != 0) {
+        var distance = that.distance.value;
+        var temp = g * distance;
         var temp = temp / Math.pow(startVelocity, 2);
         angle = 0.5 * Math.asin(temp);
     }
@@ -119,8 +125,6 @@ function animateTrajectory(startVelocity, angle, g, maxHeight, range, travelTime
 
     animate(ctx, points, i);
 }
-
-
 
 function getPoints(travelTime, startVelocity, angle, g) {
     var points = [];
@@ -251,4 +255,39 @@ function viewAllTrajectories() {
 
 function goBack() {
     location.reload();
+}
+
+function userInputValidation(that) {
+
+    var velocity = that.velocity.value;
+    var angle = that.angle.value;
+    var gravity = that.gravity.value;
+    var distance = that.distance.value;
+
+    var err = [];
+
+    if (isNaN(velocity)) { err.push('Velocity Must Be A Number'); }
+    if (isNaN(gravity)) { err.push('Gravitation Must Be A Number'); }
+    if (angle != '' && distance != '') { err.push('You Must Not Enter Both Angle And Distance'); 
+    }
+    else {
+        if (isNaN(angle) && angle != '') { err.push('Angle Must Be A Number'); }
+        if (isNaN(distance) && angle != '') { err.push('Distance Must Be A Number'); }
+    }
+    if (velocity == '') { err.push('You Must Enter A Value For Velocity'); }
+    if (gravity == '') { err.push('You Must Enter A Value For Gravitation'); }
+    if (angle == '' && distance == '') { err.push('You Must Enter A Value For Either The Angle Or The Distance')}
+
+    var errorBoxContent = "";
+    err.forEach(element => {
+        errorBoxContent += "<li>" + element + "</li>";
+    });
+    errorBoxContent = '<ul class="error-box-list">' + errorBoxContent + '</ul>';
+
+    if (err.length != 0) { 
+        document.getElementById('errorBox').innerHTML = errorBoxContent;
+        document.getElementById('errorBox').style.display = "block";
+        return false;
+    } else { return true; }
+
 }

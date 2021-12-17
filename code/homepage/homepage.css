@@ -2,6 +2,43 @@ body {
     margin: 0px;
     padding: 0px;
 }
+.grid {
+    grid-template: 
+    "head"
+    "errorBox"
+    "form"
+    "data"
+    "projectile"
+    ;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+header {
+    grid-area: head;
+}
+#errorBox {
+    grid-area: errorBox;
+    margin: auto;
+    width: 60%;
+    background-color: red;
+    border: 1px solid darkred;
+    border-radius: 10px;
+    display: none;
+}
+.error-box-list {
+    list-style: none;
+}
+#form {
+    grid-area: form;
+}
+#dataField {
+    grid-area: data;
+    display: none;
+}
+#projectileDiv {
+    grid-area: projectile;
+}
+
 h1 {
     color: red;
     text-align: center;
@@ -17,9 +54,7 @@ input, label {
 legend {
     text-align: center;
 }
-#dataField {
-    display: none;
-}
+
 .projectile-canvas {
     border: 1px solid red;
     width: 100%;
@@ -28,3 +63,4 @@ legend {
     min-height: max-content;
     display: block;
 }
+
