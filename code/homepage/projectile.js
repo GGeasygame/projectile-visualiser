@@ -44,9 +44,12 @@ function createProjectile(that) {
     animateTrajectory(startVelocity, angle, g, maxHeight, distance, travelTime);
 
     // display data to user
-    if (typeof dataArray == 'undefined')
+    if (typeof dataArray == 'undefined') {
         dataArray = [];
-    dataArray.push({ maximum_height_m: maxHeight, distance_m: distance, travel_time_s: travelTime, angle_degree: angle * 180 / Math.PI });
+        dataArrayUnits = {Maximum_height: "m", Travel_time: "s", Distance: "m", Start_velocity: "m/s", Angle: "°", Gravity: "m/s<sup>2</sup>"};
+    }
+
+    dataArray.push({ maximum_height: maxHeight, travel_time: travelTime, distance: distance, start_velocity: startVelocity ,angle: angle * 180 / Math.PI, gravity: g });
 
     htmlData = document.getElementById('datalists');
 
@@ -55,8 +58,7 @@ function createProjectile(that) {
         var count = i + 1;
         content += '<div class="data-element">Trajectory ' + count + '<br>';
         for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
-
-            content += Object.keys(dataArray[i])[j] + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
+            content += Object.keys(dataArray[i])[j].replace(/_/g, " ") + " [" + dataArrayUnits[Object.keys(dataArrayUnits)[j]] + "]" + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
             content += '<br>';
         }
         content += '</div>';
@@ -80,7 +82,6 @@ function createProjectile(that) {
     counter++;
 
 }
-
 
 function getCanvas(canvasID) {
     return document.getElementById(canvasID);
@@ -279,11 +280,11 @@ function viewAllTrajectories() {
 
         // get the highest and furthest point of all trajectories
         for (var i = 0; i < dataArray.length; i++) {
-            if (dataArray[i].maximum_height_m > highestPoint) {
+            if (dataArray[i].maximum_height > highestPoint) {
                 highestPoint = dataArray[i].maximum_height;
             }
-            if (dataArray[i].distance_m > furthestPoint) {
-                furthestPoint = dataArray[i].distance_m;
+            if (dataArray[i].distance > furthestPoint) {
+                furthestPoint = dataArray[i].distance;
             }
         }
 
