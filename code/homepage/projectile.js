@@ -58,7 +58,7 @@ function createProjectile(that) {
         var count = i + 1;
         content += '<div class="data-element">Trajectory ' + count + '<br>';
         for (var j = 0; j < Object.keys(dataArray[i]).length; j++) {
-            content += Object.keys(dataArray[i])[j].replace(/_/g, " ") + " [" + dataArrayUnits[Object.keys(dataArrayUnits)[j]] + "]" + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]]);
+            content += Object.keys(dataArray[i])[j].replace(/_/g, " ") + " [" + dataArrayUnits[Object.keys(dataArrayUnits)[j]] + "]" + ': ' + Math.round(dataArray[i][Object.keys(dataArray[i])[j]] * 100) / 100;
             content += '<br>';
         }
         content += '</div>';
