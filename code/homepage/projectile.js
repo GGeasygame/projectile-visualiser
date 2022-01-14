@@ -293,7 +293,7 @@ function viewAllTrajectories() {
 
         // get body of html
         var body = document.getElementsByTagName("body")[0];
-
+        
         // create "go back"-button
         var button = document.createElement('button');
         button.textContent = "Go Back";
