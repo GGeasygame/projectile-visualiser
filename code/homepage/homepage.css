@@ -15,19 +15,20 @@ body {
     grid-template-rows: auto;
 }
 .grid-element {
-    margin: 10px 0px;
+    margin: 0.5em 0em;
 }
-header {
+.header {
     grid-area: head;
     background-color: aqua;
+    margin-top: 0px;
 }
 #errorBox {
     grid-area: errorBox;
     margin: auto;
     width: 60%;
     background-color: red;
-    border: 1px solid darkred;
-    border-radius: 10px;
+    border: 0.15em solid darkred;
+    border-radius: 1.7em;
     display: none;
 }
 .error-box-list {
@@ -54,11 +55,14 @@ header {
     width: 70%;
     text-align: center;
 }
+#titleForm {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 fieldset {
     background-color: aliceblue;
 }
 button {
-    border-radius: 5px;
+    border-radius: 1em;
 }
 #submitForm {
     background-color: greenyellow;
@@ -79,7 +83,7 @@ legend {
     text-align: center;
 }
 .projectile-canvas {
-    border: 1px solid red;
+    border: 0.15em solid red;
     width: 100%;
     height: 100%;
     min-width: max-content;
@@ -90,13 +94,14 @@ legend {
     display: none;
 }
 li {
-    margin-bottom: 5px;
+    margin-bottom: 0.7em;
 }
 .data-element {
-    margin: 5px 5px;
+    margin: 0.7em 0.7em;
 }
 #buttons {
-    background-color: aquamarine;
+    background-color: aqua;
+    padding: 0.3em 0.5em;
 }
 #showMeters {
     margin: 0px;

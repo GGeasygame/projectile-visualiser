@@ -13,14 +13,14 @@
 
 <body>
     <div class=grid>
-        <header class="grid-element">
+        <header class="grid-element header">
             <h1 class="title">Projectile Visualiser</h1>
             <h4 class="title">A BLJ-Project by Jonas Kaufmann</h4>
         </header>
         <div id="errorBox" class="grid-element"></div>
         <div id="form" class="grid-element">
             <fieldset class="form-fieldset">
-                <legend>Enter Projectile Data and Circumstances Data</legend>
+                <h3 id="titleForm">Enter Projectile Data and Circumstances Data</h3>
                 <form action="" onsubmit="createProjectile(this); return false;">
                     <label for="velocity">Starting Velocity [m/s]</label><br>
                     <input type="text" name="velocity" class="velocity-input">
